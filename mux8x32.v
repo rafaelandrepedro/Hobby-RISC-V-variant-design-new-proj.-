@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 26.08.2024 16:43:30
+// Create Date: 30.08.2024 09:09:50
 // Design Name: 
-// Module Name: alu
+// Module Name: mux8x32
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,32 +20,30 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module alu(
+module mux8x32(
     input [31:0] A,
     input [31:0] B,
-    input [2:0] F,
-    output reg [31:0] Y,
-    output reg Cout,
-    output reg Zero
+    input [31:0] C,
+    input [31:0] D,
+    input [31:0] E,
+    input [31:0] F,
+    input [31:0] G,
+    input [31:0] H,
+    input [2:0] S,
+    output reg [31:0] Y
     );
     
-wire [31:0] BB;
-
-assign BB=F[2]?~B:B;
-
 always@(*)begin
-    
-    if(F[0]==0&&F[1]==0)
-        Y=A&BB;
-    if(F[0]==1&&F[1]==0)
-        Y=A|BB;
-    if(F[0]==0&&F[1]==1)
-        Y=A+BB;
-    if(F[0]==1&&F[1]==1)
-        Y=A<B?1:0;
-        
-    Cout=A+BB>=2^32?1:0;
-    Zero=A==0?1:0;
+    case (S)
+        3'b000: Y = A;
+        3'b001: Y = B;
+        3'b010: Y = C;
+        3'b011: Y = D;
+        3'b100: Y = E;
+        3'b101: Y = F;
+        3'b110: Y = G;
+        3'b111: Y = H;
+    endcase
 end
-
+    
 endmodule

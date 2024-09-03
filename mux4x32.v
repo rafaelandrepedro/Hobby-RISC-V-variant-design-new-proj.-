@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 26.08.2024 16:43:30
+// Create Date: 29.08.2024 17:17:41
 // Design Name: 
-// Module Name: alu
+// Module Name: mux4x32
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,32 +20,22 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module alu(
+module mux4x32(
     input [31:0] A,
     input [31:0] B,
-    input [2:0] F,
-    output reg [31:0] Y,
-    output reg Cout,
-    output reg Zero
+    input [31:0] C,
+    input [31:0] D,
+    input [1:0] S,
+    output reg [31:0] Y
     );
     
-wire [31:0] BB;
-
-assign BB=F[2]?~B:B;
-
 always@(*)begin
-    
-    if(F[0]==0&&F[1]==0)
-        Y=A&BB;
-    if(F[0]==1&&F[1]==0)
-        Y=A|BB;
-    if(F[0]==0&&F[1]==1)
-        Y=A+BB;
-    if(F[0]==1&&F[1]==1)
-        Y=A<B?1:0;
-        
-    Cout=A+BB>=2^32?1:0;
-    Zero=A==0?1:0;
+    case (S)
+        2'b00: Y = A;
+        2'b01: Y = B;
+        2'b10: Y = C;
+        2'b11: Y = D;
+    endcase
 end
-
+    
 endmodule
